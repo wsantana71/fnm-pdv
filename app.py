@@ -9,8 +9,49 @@ import requests
 import barcode
 
 from barcode.writer import ImageWriter
+app = Flask(__name__)
+
+app.secret_key = "fnm_producoes"
+
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///banco.db"
+
+db = SQLAlchemy(app)
+
+# ================= LOGIN =================
+
+@app.route(
+    "/login",
+    methods=["GET", "POST"]
+)
+def login():
+
+    if request.method == "POST":
+
+        usuario = request.form["usuario"]
+
+        senha = request.form["senha"]
+
+        user = Usuario.query.filter_by(
+
+            usuario=usuario,
+
+            senha=senha
+
+        ).first()
+
+        if user:
+
+            session["usuario"] = usuario
+
+            return redirect("/")
+
+        flash("Usuário ou senha inválidos")
+
+    return render_template(
+        "login.html"
+    )
 # ================= PRODUTOS =================
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, url_for, session, flash
 
 from flask_sqlalchemy import SQLAlchemy
 
@@ -18,15 +59,29 @@ from datetime import datetime
 
 import requests
 
-import barcode
-
-from barcode.writer import ImageWriter
-
 app = Flask(__name__)
+
+app.secret_key = "fnm_producoes"
 
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///banco.db"
 
 db = SQLAlchemy(app)
+# ================= USUARIOS =================
+
+class Usuario(db.Model):
+
+    id = db.Column(
+        db.Integer,
+        primary_key=True
+    )
+
+    usuario = db.Column(
+        db.String(100)
+    )
+
+    senha = db.Column(
+        db.String(100)
+    )
 class Produto(db.Model):
 
     id = db.Column(
@@ -121,7 +176,11 @@ ultima_venda = []
 
 # ================= DASHBOARD =================
 @app.route("/")
-def dashboard():
+def index():
+
+    if "usuario" not in session:
+
+        return redirect("/login")
 
     produtos = Produto.query.all()
 
@@ -795,6 +854,21 @@ def cadastrar_cliente():
 with app.app_context():
 
     db.create_all()
+
+    if not Usuario.query.filter_by(
+        usuario="admin"
+    ).first():
+
+        admin = Usuario(
+
+            usuario="admin",
+
+            senha="123"
+        )
+
+        db.session.add(admin)
+
+        db.session.commit()
 
 # ================= START =================
 # ================= ESTOQUE =================
