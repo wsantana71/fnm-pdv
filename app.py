@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, url_for, session, flash
 
 from flask_sqlalchemy import SQLAlchemy
 
@@ -18,55 +18,7 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///banco.db"
 db = SQLAlchemy(app)
 
 
-# ================= LOGIN =================
 
-@app.route(
-    "/login",
-    methods=["GET", "POST"]
-)
-def login():
-
-    if request.method == "POST":
-
-        usuario = request.form["usuario"]
-
-        senha = request.form["senha"]
-
-        user = Usuario.query.filter_by(
-
-            usuario=usuario,
-
-            senha=senha
-
-        ).first()
-
-        if user:
-
-            session["usuario"] = usuario
-
-            return redirect("/")
-
-        flash("Usuário ou senha inválidos")
-
-    return render_template(
-        "login.html"
-    )
-# ================= PRODUTOS =================
-from flask import Flask, render_template, request, redirect, url_for, session, flash
-
-from flask_sqlalchemy import SQLAlchemy
-
-from datetime import datetime
-
-import requests
-
-app = Flask(__name__)
-
-app.secret_key = "fnm_producoes"
-
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///banco.db"
-
-db = SQLAlchemy(app)
 # ================= USUARIOS =================
 
 class Usuario(db.Model):
@@ -117,7 +69,47 @@ class Produto(db.Model):
     estoque_minimo = db.Column(
         db.Integer
     )
+# ================= LOGIN =================
 
+@app.route(
+    "/login",
+    methods=["GET", "POST"]
+)
+def login():
+
+    if request.method == "POST":
+
+        usuario = request.form["usuario"]
+
+        senha = request.form["senha"]
+
+        user = Usuario.query.filter_by(
+
+            usuario=usuario,
+
+            senha=senha
+
+        ).first()
+
+        if user:
+
+            session["usuario"] = usuario
+
+            return redirect("/")
+
+        flash("Usuário ou senha inválidos")
+
+    return render_template(
+        "login.html"
+    )
+
+
+@app.route("/logout")
+def logout():
+
+    session.clear()
+
+    return redirect("/login")
 # ================= VENDAS =================
 
 class Venda(db.Model):
