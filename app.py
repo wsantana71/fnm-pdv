@@ -17,6 +17,7 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///banco.db"
 
 db = SQLAlchemy(app)
 
+
 # ================= LOGIN =================
 
 @app.route(
