@@ -1,0 +1,426 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>
+    Produtos
+</h1>
+
+<div class="grid">
+
+    <div class="card">
+
+        <h2>
+            📦 Cadastrar Produto
+        </h2>
+
+        <br>
+
+        <div
+            style="
+                text-align:center;
+                margin-bottom:20px;
+            "
+        >
+
+            <img
+                id="previewImagem"
+                src=""
+                style="
+                    width:160px;
+                    height:160px;
+                    object-fit:cover;
+                    border-radius:20px;
+                    display:none;
+                    border:3px solid #e2e8f0;
+                "
+            >
+
+
+        </div>
+
+        <form
+            action="/cadastrar"
+            method="POST"
+        >
+<input
+    type="hidden"
+    name="imagem"
+    id="imagem"
+>
+            <input
+                type="text"
+                name="codigo"
+                id="codigo"
+                placeholder="Código de barras"
+                required
+            >
+
+            <input
+                type="text"
+                name="nome"
+                id="nome"
+                placeholder="Nome do produto"
+                required
+            >
+
+            <input
+                type="number"
+                step="0.01"
+                name="preco"
+                placeholder="Preço"
+                required
+            >
+
+            <input
+                type="number"
+                name="estoque"
+                placeholder="Estoque"
+                required
+            >
+
+            <input
+                type="text"
+                name="categoria"
+                id="categoria"
+                placeholder="Categoria"
+            >
+
+            <input
+                type="number"
+                name="estoque_minimo"
+                placeholder="Estoque mínimo"
+            >
+
+            <button
+                type="submit"
+                class="verde"
+            >
+
+                ✅ Cadastrar Produto
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+<div class="card">
+
+    <div
+        style="
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            margin-bottom:20px;
+            flex-wrap:wrap;
+            gap:10px;
+        "
+    >
+
+        <h2>
+            📋 Lista de Produtos
+        </h2>
+
+        <form
+            method="GET"
+            action="/produtos"
+            style="
+                display:flex;
+                gap:10px;
+                flex-wrap:wrap;
+            "
+        >
+
+            <input
+                type="text"
+                name="busca"
+                placeholder="Buscar produto..."
+                style="
+                    width:250px;
+                "
+            >
+
+            <button
+                class="azul"
+                style="
+                    width:auto;
+                    padding:12px 20px;
+                    margin-top:10px;
+                "
+            >
+
+                🔍 Buscar
+
+            </button>
+
+        </form>
+
+    </div>
+
+    <div
+        style="
+            overflow-x:auto;
+        "
+    >
+
+        <table
+            style="
+                width:100%;
+                border-collapse:collapse;
+                min-width:900px;
+            "
+        >
+
+            <thead>
+
+                <tr
+                    style="
+                        background:#eef2ff;
+                        color:#1e1b4b;
+                    "
+                >
+
+                    <th style="padding:15px;">
+                        Código
+                    </th>
+
+                    <th>
+                        Produto
+                    </th>
+
+                    <th>
+                        Categoria
+                    </th>
+
+                    <th>
+                        Preço
+                    </th>
+
+                    <th>
+                        Estoque
+                    </th>
+
+                    <th>
+                        Mínimo
+                    </th>
+
+                    <th>
+                        Ações
+                    </th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for produto in produtos %}
+
+                <tr
+                    style="
+                        border-bottom:
+                        1px solid #e2e8f0;
+                    "
+                >
+
+                    <td
+                        style="
+                            padding:15px;
+                        "
+                    >
+
+                        {{ produto.codigo }}
+
+                    </td>
+
+                    <td>
+
+                        <strong>
+
+                            {{ produto.nome }}
+
+                        </strong>
+
+                    </td>
+
+                    <td>
+
+                        {{ produto.categoria }}
+
+                    </td>
+
+                    <td>
+
+                        <strong>
+
+                            R$ {{ produto.preco }}
+
+                        </strong>
+
+                    </td>
+
+                    <td>
+
+                        {% if produto.estoque <= produto.estoque_minimo %}
+
+                            <span
+                                style="
+                                    background:#fee2e2;
+                                    color:#991b1b;
+                                    padding:6px 10px;
+                                    border-radius:8px;
+                                    font-weight:bold;
+                                "
+                            >
+
+                                {{ produto.estoque }}
+
+                            </span>
+
+                        {% else %}
+
+                            {{ produto.estoque }}
+
+                        {% endif %}
+
+                    </td>
+
+                    <td>
+
+                        {{ produto.estoque_minimo }}
+
+                    </td>
+
+                    <td>
+
+                        <div
+                            style="
+                                display:flex;
+                                gap:10px;
+                            "
+                        >
+
+                            <a
+                                href="/editar/{{ produto.id }}"
+                            >
+
+                                <button
+                                    type="button"
+                                    class="azul"
+                                    style="
+                                        width:auto;
+                                        padding:10px 15px;
+                                        margin-top:0;
+                                    "
+                                >
+
+                                    ✏️
+
+                                </button>
+
+                            </a>
+
+                            <form
+                                action="/excluir/{{ produto.id }}"
+                                method="POST"
+                            >
+
+                                <button
+                                    class="vermelho"
+                                    style="
+                                        width:auto;
+                                        padding:10px 15px;
+                                        margin-top:0;
+                                    "
+                                >
+
+                                    🗑️
+
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+<script>
+
+const codigo = document.getElementById(
+    "codigo"
+)
+
+codigo.addEventListener("change", async () => {
+
+    const valor = codigo.value
+
+    if(valor.length >= 8){
+
+        buscarProduto(valor)
+
+    }
+
+})
+
+async function buscarProduto(codigoBarra){
+
+    try{
+
+        const resposta = await fetch(
+
+            `/buscar_produto/${codigoBarra}`
+
+        )
+
+        const dados = await resposta.json()
+
+        document.getElementById(
+            "nome"
+        ).value = dados.descricao || ""
+
+        document.getElementById(
+            "categoria"
+        ).value = dados.categoria || ""
+
+        if(dados.imagem){
+
+            const imagem = document.getElementById(
+                "previewImagem"
+            )
+
+            imagem.src = dados.imagem
+
+            document.getElementById(
+                "imagem"
+            ).value = dados.imagem
+
+            imagem.style.display = "block"
+
+        }
+
+    }catch(erro){
+
+        console.log(erro)
+
+    }
+
+}
+
+</script>
+
+{% endblock %}

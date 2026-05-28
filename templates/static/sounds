@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>ESTOQUE</h1>
+
+<div class="card">
+
+    <h2>
+        📦 Controle de Estoque
+    </h2>
+
+    <br>
+
+    <table>
+
+        <tr>
+
+            <th>
+                Produto
+            </th>
+
+            <th>
+                Estoque
+            </th>
+
+            <th>
+                Mínimo
+            </th>
+
+            <th>
+                Entrada
+            </th>
+
+            <th>
+                Saída
+            </th>
+
+        </tr>
+
+        {% for produto in produtos %}
+
+        <tr>
+
+            <td>
+
+                {{ produto.nome }}
+
+            </td>
+
+            <td>
+
+                {% if produto.estoque <= produto.estoque_minimo %}
+
+                    <span class="tag tag-vermelha">
+
+                        {{ produto.estoque }}
+
+                    </span>
+
+                {% else %}
+
+                    <span class="tag tag-verde">
+
+                        {{ produto.estoque }}
+
+                    </span>
+
+                {% endif %}
+
+            </td>
+
+            <td>
+
+                {{ produto.estoque_minimo }}
+
+            </td>
+
+            <td>
+
+                <form
+                    action="/entrada_estoque/{{ produto.id }}"
+                    method="POST"
+                >
+
+                    <input
+                        type="number"
+                        name="quantidade"
+                        placeholder="Qtd"
+                        required
+                    >
+
+                    <button
+                        class="verde btn-pequeno"
+                    >
+
+                        Entrada
+
+                    </button>
+
+                </form>
+
+            </td>
+
+            <td>
+
+                <form
+                    action="/saida_estoque/{{ produto.id }}"
+                    method="POST"
+                >
+
+                    <input
+                        type="number"
+                        name="quantidade"
+                        placeholder="Qtd"
+                        required
+                    >
+
+                    <button
+                        class="vermelho btn-pequeno"
+                    >
+
+                        Saída
+
+                    </button>
+
+                </form>
+
+            </td>
+
+        </tr>
+
+        {% endfor %}
+
+    </table>
+
+</div>
+
+{% endblock %}

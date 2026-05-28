@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>EDITAR PRODUTO</h1>
+
+<div class="card">
+
+    <form method="POST">
+
+        <input
+            type="text"
+            name="codigo"
+            value="{{ produto.codigo }}"
+            required
+        >
+
+        <input
+            type="text"
+            name="nome"
+            value="{{ produto.nome }}"
+            required
+        >
+
+        <input
+            type="number"
+            step="0.01"
+            name="preco"
+            value="{{ produto.preco }}"
+            required
+        >
+
+        <input
+            type="number"
+            name="estoque"
+            value="{{ produto.estoque }}"
+            required
+        >
+
+        <button class="verde">
+
+            Salvar Alterações
+
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}

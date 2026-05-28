@@ -1,0 +1,171 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>ESTOQUE</h1>
+
+<div class="card">
+
+    <form method="GET" action="/estoque">
+
+        <input
+            type="text"
+            name="busca"
+            placeholder="Buscar por código ou descrição"
+        >
+
+        <button class="azul">
+
+            Buscar
+
+        </button>
+
+    </form>
+
+</div>
+
+<div class="card">
+
+    <form method="GET" action="/estoque">
+
+        <input
+            type="text"
+            name="busca"
+            placeholder="Buscar por código ou descrição"
+        >
+
+        <button class="azul">
+
+            Buscar
+
+        </button>
+
+    </form>
+
+</div>
+<div class="card">
+
+    <h2>
+        Controle de Estoque
+    </h2>
+
+    <br>
+
+    {% for produto in produtos %}
+
+    <div
+        style="
+            background:#f8fafc;
+            border:1px solid #e2e8f0;
+            padding:20px;
+            border-radius:15px;
+            margin-top:15px;
+        "
+    >
+
+        <h3
+            style="
+                color:#0f172a;
+                margin-bottom:10px;
+            "
+        >
+
+            {{ produto.nome }}
+
+        </h3>
+
+        <p>
+            <strong>
+                Código:
+            </strong>
+
+            {{ produto.codigo }}
+        </p>
+
+        <p>
+            <strong>
+                Categoria:
+            </strong>
+
+            {{ produto.categoria }}
+        </p>
+
+        <p>
+            <strong>
+                Estoque Atual:
+            </strong>
+
+            {{ produto.estoque }}
+        </p>
+
+        <p>
+            <strong>
+                Estoque Mínimo:
+            </strong>
+
+            {{ produto.estoque_minimo }}
+        </p>
+
+        {% if produto.estoque <= produto.estoque_minimo %}
+
+        <p
+            style="
+                color:red;
+                font-weight:bold;
+                margin-top:10px;
+            "
+        >
+
+            ⚠ Estoque Baixo
+
+        </p>
+
+        {% endif %}
+
+        <form
+            action="/entrada_estoque/{{ produto.id }}"
+            method="POST"
+        >
+
+            <input
+                type="number"
+                name="quantidade"
+                placeholder="Quantidade entrada"
+                required
+            >
+
+            <button class="verde">
+
+                Entrada Estoque
+
+            </button>
+
+        </form>
+
+        <form
+            action="/saida_estoque/{{ produto.id }}"
+            method="POST"
+        >
+
+            <input
+                type="number"
+                name="quantidade"
+                placeholder="Quantidade saída"
+                required
+            >
+
+            <button class="vermelho">
+
+                Saída Estoque
+
+            </button>
+
+        </form>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}

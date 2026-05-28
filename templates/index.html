@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>PDV Online</title>
+
+    <style>
+
+        body{
+            background:#0f172a;
+            color:white;
+            font-family:Arial;
+            margin:0;
+            padding:0;
+        }
+
+        .topo{
+            background:#1e293b;
+            padding:20px;
+            font-size:25px;
+            font-weight:bold;
+        }
+
+        .conteudo{
+            padding:30px;
+        }
+
+        form{
+            background:#1e293b;
+            padding:20px;
+            border-radius:10px;
+            width:300px;
+            margin-top:20px;
+        }
+
+        input{
+            width:100%;
+            padding:10px;
+            margin-top:10px;
+            border:none;
+            border-radius:5px;
+        }
+
+        button{
+            width:100%;
+            padding:12px;
+            margin-top:15px;
+            border:none;
+            border-radius:5px;
+            cursor:pointer;
+            color:white;
+            font-size:16px;
+        }
+
+        .btn-cadastrar{
+            background:#22c55e;
+        }
+
+        .btn-vender{
+            background:#3b82f6;
+        }
+
+        .produto{
+            background:#1e293b;
+            padding:15px;
+            border-radius:10px;
+            margin-top:15px;
+            width:300px;
+        }
+
+        .total{
+            background:#22c55e;
+            padding:20px;
+            border-radius:10px;
+            margin-top:30px;
+            width:300px;
+            font-size:25px;
+            font-weight:bold;
+        }
+
+    </style>
+
+</head>
+<body>
+
+    <div class="topo">
+        PDV ONLINE
+    </div>
+
+    <div class="conteudo">
+
+        <h1>Cadastro de Produtos</h1>
+
+        <form action="/cadastrar" method="POST">
+
+            <input
+                type="text"
+                name="codigo"
+                placeholder="Código de barras"
+                required
+            >
+
+            <input
+                type="text"
+                name="nome"
+                placeholder="Nome do produto"
+                required
+            >
+
+            <input
+                type="number"
+                step="0.01"
+                name="preco"
+                placeholder="Preço"
+                required
+            >
+
+            <input
+                type="number"
+                name="estoque"
+                placeholder="Estoque"
+                required
+            >
+
+            <button
+                type="submit"
+                class="btn-cadastrar"
+            >
+                Cadastrar Produto
+            </button>
+
+        </form>
+
+        <h2>Leitor de Código de Barras</h2>
+
+        <form
+            action="/scanner"
+            method="POST"
+            id="scanner-form"
+        >
+
+            <input
+                type="text"
+                name="codigo"
+                id="scanner"
+                placeholder="Passe o leitor aqui"
+                required
+            >
+
+            <button class="btn-vender">
+
+                Ler Produto
+
+            </button>
+
+        </form>
+
+        <h2>Produtos</h2>
+
+        {% for produto in produtos %}
+
+        <div class="produto">
+
+            <h3>{{ produto.nome }}</h3>
+
+            <p>Código: {{ produto.codigo }}</p>
+
+            <p>Preço: R$ {{ produto.preco }}</p>
+
+            <p>Estoque: {{ produto.estoque }}</p>
+
+            <form action="/vender/{{ produto.id }}" method="POST">
+
+                <button
+                    type="submit"
+                    class="btn-vender"
+                >
+                    Adicionar ao Carrinho
+                </button>
+
+            </form>
+
+        </div>
+
+        {% endfor %}
+
+        <h2>Carrinho</h2>
+
+        {% for item in carrinho.values() %}
+
+        <div class="produto">
+
+            <h3>{{ item.nome }}</h3>
+
+            <p>Preço: R$ {{ item.preco }}</p>
+
+            <p>Quantidade: {{ item.quantidade }}</p>
+
+            <p>
+                Subtotal:
+                R$ {{ item.preco * item.quantidade }}
+            </p>
+
+            <form action="/remover/{{ item.id }}" method="POST">
+
+                <button
+                    type="submit"
+                    style="background:red;"
+                >
+                    Remover Item
+                </button>
+
+            </form>
+
+        </div>
+
+        {% endfor %}
+
+        <div class="total">
+
+            TOTAL CARRINHO
+            <br><br>
+
+            R$ {{ total_carrinho }}
+
+        </div>
+
+        <form action="/finalizar" method="POST">
+
+            <button class="btn-cadastrar">
+
+                Finalizar Venda
+
+            </button>
+
+        </form>
+
+        <div class="total">
+
+            TOTAL DO CAIXA
+            <br><br>
+
+            R$ {{ total }}
+
+        </div>
+
+    </div>
+
+<script>
+
+const scanner = document.getElementById("scanner")
+
+scanner.addEventListener("input", function() {
+
+    if(scanner.value.length >= 4){
+
+        document.getElementById(
+            "scanner-form"
+        ).submit()
+
+    }
+
+})
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>
+
+    🏷 Etiquetas
+
+</h1>
+
+<div class="card">
+
+    <form
+        action="/imprimir_etiquetas"
+        method="POST"
+    >
+
+        {% for produto in produtos %}
+
+        <div
+            style="
+                background:#f8fafc;
+                padding:15px;
+                border-radius:15px;
+                margin-top:10px;
+                display:flex;
+                align-items:center;
+                justify-content:space-between;
+            "
+        >
+
+            <div>
+
+                <strong>
+
+                    {{ produto.nome }}
+
+                </strong>
+
+                <br>
+
+                Código:
+                {{ produto.codigo }}
+
+            </div>
+
+            <input
+                type="checkbox"
+                name="produtos"
+                value="{{ produto.id }}"
+                style="
+                    width:25px;
+                    height:25px;
+                "
+            >
+
+        </div>
+
+        {% endfor %}
+
+        <button
+            class="azul"
+            style="
+                margin-top:20px;
+            "
+        >
+
+            🖨️ Imprimir Selecionados
+
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}

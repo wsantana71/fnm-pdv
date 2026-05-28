@@ -1,0 +1,590 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1 style="margin-bottom:25px;">
+
+    FRENTE DE CAIXA
+
+</h1>
+
+<!-- BUSCA -->
+
+<div class="card">
+
+    <form
+        action="/scanner"
+        method="POST"
+        id="scanner-form"
+    >
+
+        <input
+            type="text"
+            name="codigo"
+            id="scanner"
+            placeholder="🔍 Passe o leitor ou digite o código"
+            required
+        >
+
+    </form>
+
+</div>
+
+<div
+    style="
+        display:grid;
+        grid-template-columns:2fr 1fr;
+        gap:20px;
+        margin-top:20px;
+    "
+>
+
+    <!-- PRODUTOS -->
+
+    <div class="card">
+
+        <h2 style="margin-bottom:20px;">
+
+            Produtos
+
+        </h2>
+
+        <div
+            style="
+                display:grid;
+                grid-template-columns:
+                repeat(
+                    auto-fit,
+                    minmax(220px,1fr)
+                );
+                gap:20px;
+            "
+        >
+
+            {% for produto in produtos %}
+
+<div
+    style="
+        background:#f8fafc;
+        border-radius:20px;
+        padding:15px;
+        box-shadow:
+        0 4px 15px rgba(
+            0,
+            0,
+            0,
+            0.08
+        );
+
+        display:flex;
+        flex-direction:column;
+        justify-content:space-between;
+
+        height:420px;
+    "
+>
+
+                {% if produto.imagem %}
+
+                <img
+                    src="{{ produto.imagem }}"
+                    style="
+                        width:100%;
+                        height:180px;
+                        object-fit:cover;
+                        border-radius:15px;
+                    "
+                >
+
+                {% else %}
+
+                <div
+                    style="
+                        width:100%;
+                        height:180px;
+                        background:#e2e8f0;
+                        border-radius:15px;
+                        display:flex;
+                        align-items:center;
+                        justify-content:center;
+                        font-size:50px;
+                    "
+                >
+
+                    📦
+
+                </div>
+
+                {% endif %}
+
+                <h3
+style="
+    margin-top:15px;
+    color:#0f172a;
+
+    min-height:70px;
+
+    overflow:hidden;
+
+    display:-webkit-box;
+    -webkit-line-clamp:3;
+    -webkit-box-orient:vertical;
+"
+                >
+
+                    {{ produto.nome }}
+
+                </h3>
+
+                <p
+                    style="
+                        margin-top:8px;
+                        color:#64748b;
+                    "
+                >
+
+                    Código:
+                    {{ produto.codigo }}
+
+                </p>
+
+                <p
+                    style="
+                        margin-top:5px;
+                        color:#64748b;
+                    "
+                >
+
+                    Estoque:
+                    {{ produto.estoque }}
+
+                </p>
+
+                <h2
+                    style="
+                        margin-top:15px;
+                        color:#4f46e5;
+                    "
+                >
+
+                    R$ {{ produto.preco }}
+
+                </h2>
+
+                <form
+                    action="/vender/{{ produto.id }}"
+                    method="POST"
+                >
+
+                    <button
+                        class="azul"
+                        style="
+                            margin-top:15px;
+                        "
+                    >
+
+                        Adicionar
+
+                    </button>
+
+                </form>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+    <!-- CARRINHO -->
+
+    <div class="card">
+
+        <h2>
+
+            Carrinho
+
+        </h2>
+
+        <br>
+
+        <div
+            style="
+                max-height:500px;
+                overflow:auto;
+            "
+        >
+
+            {% for item in carrinho.values() %}
+
+            <div
+                style="
+                    background:#f8fafc;
+                    padding:15px;
+                    border-radius:15px;
+                    margin-bottom:15px;
+                "
+            >
+
+                <strong>
+
+                    {{ item.nome }}
+
+                </strong>
+
+                <p
+                    style="
+                        margin-top:8px;
+                    "
+                >
+
+<div
+    style="
+        display:flex;
+        align-items:center;
+        gap:10px;
+        margin-top:10px;
+    "
+>
+
+    <form
+        action="/remover/{{ item.id }}"
+        method="POST"
+    >
+
+        <button
+            class="vermelho"
+            style="
+                width:40px;
+                height:40px;
+                padding:0;
+                margin:0;
+            "
+        >
+
+            -
+
+        </button>
+
+    </form>
+
+    <strong>
+
+        {{ item.quantidade }}
+
+    </strong>
+
+    <form
+        action="/vender/{{ item.id }}"
+        method="POST"
+    >
+
+        <button
+            class="verde"
+            style="
+                width:40px;
+                height:40px;
+                padding:0;
+                margin:0;
+            "
+        >
+
+            +
+
+        </button>
+
+    </form>
+
+</div>
+
+                <p>
+
+                    Subtotal:
+                    R$
+                    {{ item.preco * item.quantidade }}
+
+                </p>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        <div
+            style="
+                margin-top:20px;
+                padding:20px;
+                border-radius:20px;
+                background:#0f172a;
+                color:white;
+                text-align:center;
+            "
+        >
+
+            <h3>
+
+                TOTAL
+
+            </h3>
+
+<h1
+    style="
+        margin-top:10px;
+        font-size:40px;
+        color:white;
+    "
+>
+
+    R$
+    {{ "%.2f"|format(total_carrinho) }}
+
+</h1>
+
+        </div>
+
+        <!-- DINHEIRO -->
+
+        <button
+            type="button"
+            class="verde"
+            onclick="abrirDinheiro()"
+        >
+
+            💵 Dinheiro
+
+        </button>
+
+        <div
+            id="areaDinheiro"
+            style="
+                display:none;
+                margin-top:15px;
+            "
+        >
+
+            <input
+                type="number"
+                step="0.01"
+                id="valor_recebido"
+                placeholder="Valor recebido"
+                oninput="calcularTroco()"
+            >
+
+            <div
+                id="troco"
+                style="
+                    margin-top:10px;
+                    font-size:20px;
+                    font-weight:bold;
+                    color:#22c55e;
+                "
+            >
+
+                Troco: R$ 0,00
+
+            </div>
+
+            <form
+                action="/finalizar"
+                method="POST"
+            >
+
+                <button
+                    type="submit"
+                    name="pagamento"
+                    value="Dinheiro"
+                    class="verde"
+                >
+
+                    Confirmar Dinheiro
+
+                </button>
+
+            </form>
+
+        </div>
+
+        <!-- PIX -->
+
+        <form
+            action="/finalizar"
+            method="POST"
+        >
+
+            <button
+                type="submit"
+                name="pagamento"
+                value="Pix"
+                class="azul"
+            >
+
+                📲 PIX
+
+            </button>
+
+        </form>
+
+        <!-- CRÉDITO -->
+
+        <form
+            action="/finalizar"
+            method="POST"
+        >
+
+            <button
+                type="submit"
+                name="pagamento"
+                value="Crédito"
+                class="azul"
+            >
+
+                💳 Crédito
+
+            </button>
+
+        </form>
+
+        <!-- DÉBITO -->
+
+        <form
+            action="/finalizar"
+            method="POST"
+        >
+
+            <button
+                type="submit"
+                name="pagamento"
+                value="Débito"
+                class="azul"
+            >
+
+                💳 Débito
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+<script>
+
+const scanner = document.getElementById(
+    "scanner"
+)
+
+scanner.focus()
+
+scanner.addEventListener(
+
+    "input",
+
+    function(){
+
+        if(scanner.value.length >= 4){
+
+            document.getElementById(
+                "scanner-form"
+            ).submit()
+
+        }
+
+    }
+
+)
+
+window.onload = function(){
+
+    scanner.focus()
+
+}
+
+document.addEventListener(
+
+    "click",
+
+    function(e){
+
+        if(
+            e.target.id !=
+            "valor_recebido"
+        ){
+
+            scanner.focus()
+
+        }
+
+    }
+
+)
+
+function abrirDinheiro(){
+
+    const area = document.getElementById(
+        "areaDinheiro"
+    )
+
+    if(area.style.display == "none"){
+
+        area.style.display = "block"
+
+    }else{
+
+        area.style.display = "none"
+
+    }
+
+}
+
+function calcularTroco(){
+
+    let recebido = parseFloat(
+
+        document.getElementById(
+            "valor_recebido"
+        ).value
+
+    ) || 0
+
+    let total = parseFloat(
+        "{{ total_carrinho }}"
+    )
+
+    let troco = recebido - total
+
+    if(troco < 0){
+
+        troco = 0
+
+    }
+
+    document.getElementById(
+        "troco"
+    ).innerHTML =
+
+        "Troco: R$ " +
+
+        troco.toFixed(2)
+
+}
+
+document.getElementById(
+    "valor_recebido"
+).addEventListener(
+
+    "focus",
+
+    function(){
+
+        scanner.blur()
+
+    }
+
+)
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+
+<meta charset="UTF-8">
+
+<title>
+Etiquetas
+</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial;
+}
+
+body{
+
+    background:white;
+    padding:20px;
+
+}
+
+.topo{
+
+    margin-bottom:20px;
+
+}
+
+.btn{
+
+    background:#2563eb;
+    color:white;
+    border:none;
+    padding:15px 25px;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:16px;
+
+}
+
+.folha{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(4, 1fr);
+
+    gap:10px;
+
+}
+
+.etiqueta{
+
+    border:1px dashed #000;
+
+    padding:10px;
+
+    height:180px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:space-between;
+
+    page-break-inside:avoid;
+
+}
+
+.loja{
+
+    text-align:center;
+
+    font-size:14px;
+
+    font-weight:bold;
+
+}
+
+.nome{
+
+    font-size:15px;
+
+    text-align:center;
+
+    font-weight:bold;
+
+    min-height:40px;
+
+}
+
+.preco{
+
+    text-align:center;
+
+    font-size:30px;
+
+    font-weight:bold;
+
+    color:#dc2626;
+
+}
+
+.codigo{
+
+    text-align:center;
+
+    font-size:13px;
+
+    margin-top:5px;
+
+}
+
+.barras{
+
+    text-align:center;
+
+    margin-top:5px;
+
+}
+
+.barras img{
+
+    width:100%;
+
+    height:60px;
+
+}
+
+@media print{
+
+    .topo{
+
+        display:none;
+
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="topo">
+
+    <button
+        class="btn"
+        onclick="window.print()"
+    >
+
+        🖨️ Imprimir
+
+    </button>
+
+</div>
+
+<div class="folha">
+
+{% for produto in produtos %}
+
+<div class="etiqueta">
+
+    <div class="loja">
+
+        FNM PRODUÇÕES
+
+    </div>
+
+    <div class="nome">
+
+        {{ produto.nome }}
+
+    </div>
+
+    <div class="preco">
+
+        R$ {{ produto.preco }}
+
+    </div>
+
+    <div class="barras">
+
+        <img
+            src="https://barcode.tec-it.com/barcode.ashx?data={{ produto.codigo }}&code=Code128"
+        >
+
+    </div>
+
+    <div class="codigo">
+
+        {{ produto.codigo }}
+
+    </div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+</body>
+</html>

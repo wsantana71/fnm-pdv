@@ -1,0 +1,199 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>
+    Dashboard
+</h1>
+
+<div class="grid">
+
+    <div class="card">
+
+        <h3>
+            💰 Total em Caixa
+        </h3>
+
+        <br>
+
+        <h1>
+
+            R$ {{ total }}
+
+        </h1>
+
+    </div>
+
+    <div class="card">
+
+        <h3>
+            📦 Produtos
+        </h3>
+
+        <br>
+
+        <h1>
+
+            {{ total_produtos }}
+
+        </h1>
+
+    </div>
+
+    <div class="card">
+
+        <h3>
+            🧾 Vendas
+        </h3>
+
+        <br>
+
+        <h1>
+
+            {{ total_vendas }}
+
+        </h1>
+
+    </div>
+
+    <div class="card">
+
+        <h3>
+            🏆 Mais Vendido
+        </h3>
+
+        <br>
+
+        <h2>
+
+            {{ produto_top }}
+
+        </h2>
+
+    </div>
+
+</div>
+
+<div class="card">
+
+    <h2>
+        📊 Vendas da Semana
+    </h2>
+
+    <br>
+
+    <canvas id="grafico"></canvas>
+
+</div>
+
+<div class="card">
+
+    <h2>
+        🚨 Estoque Baixo
+    </h2>
+
+    <br>
+
+    {% if estoque_baixo %}
+
+        {% for produto in estoque_baixo %}
+
+        <div
+            style="
+                background:#fee2e2;
+                color:#991b1b;
+                padding:15px;
+                border-radius:12px;
+                margin-top:10px;
+            "
+        >
+
+            <strong>
+
+                {{ produto.nome }}
+
+            </strong>
+
+            <br><br>
+
+            Estoque Atual:
+            {{ produto.estoque }}
+
+            <br>
+
+            Estoque Mínimo:
+            {{ produto.estoque_minimo }}
+
+        </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>
+
+            Nenhum produto com estoque baixo.
+
+        </p>
+
+    {% endif %}
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+const ctx = document.getElementById(
+    'grafico'
+)
+
+new Chart(ctx, {
+
+    type: 'line',
+
+    data: {
+
+        labels: [
+
+            'Seg',
+
+            'Ter',
+
+            'Qua',
+
+            'Qui',
+
+            'Sex',
+
+            'Sab',
+
+            'Dom'
+
+        ],
+
+        datasets: [{
+
+            label: 'Vendas',
+
+           data: {{ vendas_semana|tojson }}
+
+            tension:0.4,
+
+            fill:true
+
+        }]
+
+    },
+
+    options: {
+
+        responsive:true
+
+    }
+
+})
+
+</script>
+
+{% endblock %}

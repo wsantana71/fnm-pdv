@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Cupom</title>
+
+    <style>
+
+        *{
+
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Arial;
+
+        }
+
+        body{
+
+            background:#0f172a;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            min-height:100vh;
+            padding:20px;
+
+        }
+
+        .cupom{
+
+            width:350px;
+            background:white;
+            color:black;
+            border-radius:20px;
+            padding:25px;
+            box-shadow:0 0 30px rgba(0,0,0,0.3);
+
+        }
+
+        .topo{
+
+            text-align:center;
+
+        }
+
+        .logo{
+
+            width:80px;
+            height:80px;
+            background:#2563eb;
+            border-radius:50%;
+            margin:auto;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            color:white;
+            font-size:35px;
+            font-weight:bold;
+            margin-bottom:15px;
+
+        }
+
+        .topo h1{
+
+            font-size:28px;
+            color:#0f172a;
+
+        }
+
+        .topo p{
+
+            color:#555;
+            margin-top:5px;
+
+        }
+
+        .linha{
+
+            border-top:2px dashed #cbd5e1;
+            margin:20px 0;
+
+        }
+
+        .info{
+
+            margin-top:10px;
+            line-height:28px;
+
+        }
+
+        .produto{
+
+            background:#f1f5f9;
+            padding:15px;
+            border-radius:12px;
+            margin-top:12px;
+
+        }
+
+        .produto strong{
+
+            font-size:17px;
+
+        }
+
+        .total-box{
+
+            background:#16a34a;
+            color:white;
+            padding:20px;
+            border-radius:15px;
+            text-align:center;
+            margin-top:20px;
+
+        }
+
+        .total-box h2{
+
+            font-size:18px;
+
+        }
+
+        .total-box h1{
+
+            font-size:36px;
+            margin-top:10px;
+
+        }
+
+        .rodape{
+
+            text-align:center;
+            margin-top:25px;
+            color:#555;
+            font-size:14px;
+            line-height:24px;
+
+        }
+
+        .btn{
+
+            width:100%;
+            padding:15px;
+            border:none;
+            border-radius:12px;
+            background:#2563eb;
+            color:white;
+            font-size:17px;
+            cursor:pointer;
+            margin-top:15px;
+
+        }
+
+        .btn:hover{
+
+            background:#1d4ed8;
+
+        }
+
+        .btn-verde{
+
+            background:#16a34a;
+
+        }
+
+        .btn-verde:hover{
+
+            background:#15803d;
+
+        }
+
+        @media print{
+
+            body{
+
+                background:white;
+
+            }
+
+            .btn{
+
+                display:none;
+
+            }
+
+            .cupom{
+
+                box-shadow:none;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+<body>
+
+    <div class="cupom">
+
+        <div class="topo">
+
+            <div class="logo">
+
+                FNM
+
+            </div>
+
+            <h1>
+
+                FNM PRODUÇÕES
+
+            </h1>
+
+            <p>
+
+                Sistema PDV
+
+            </p>
+
+        </div>
+
+        <div class="linha"></div>
+
+        <div class="info">
+
+            <p>
+
+                <strong>Data:</strong>
+                {{ horario }}
+
+            </p>
+
+            <p>
+
+                <strong>Pagamento:</strong>
+                {{ pagamento }}
+
+            </p>
+
+        </div>
+
+        <div class="linha"></div>
+
+        {% for item in venda %}
+
+        <div class="produto">
+
+            <strong>
+
+                {{ item.produto }}
+
+            </strong>
+
+            <br><br>
+
+            Quantidade:
+            {{ item.quantidade }}
+
+            <br>
+
+            Valor:
+            R$ {{ item.valor }}
+
+        </div>
+
+        {% endfor %}
+
+        <div class="total-box">
+
+            <h2>
+
+                TOTAL DA VENDA
+
+            </h2>
+
+            <h1>
+
+                R$ {{ total }}
+
+            </h1>
+
+        </div>
+
+        <div class="rodape">
+
+            Obrigado pela preferência ❤️
+
+            <br>
+
+            Volte sempre!
+
+        </div>
+
+        <button
+            class="btn"
+            onclick="window.print()"
+        >
+
+            🖨️ Imprimir Cupom
+
+        </button>
+
+        <a href="/caixa">
+
+            <button
+                class="btn btn-verde"
+            >
+
+                🔙 Voltar ao Sistema
+
+            </button>
+
+        </a>
+
+        <a href="/">
+
+            <button
+                class="btn"
+            >
+
+                🏠 Dashboard
+
+            </button>
+
+        </a>
+
+    </div>
+
+</body>
+</html>

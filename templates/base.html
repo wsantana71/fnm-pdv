@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        FNM PRODUÇÕES
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    >
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Arial;
+        }
+
+        body{
+
+            background:#f1f5f9;
+            display:flex;
+
+        }
+
+        .menu{
+
+            width:260px;
+            height:100vh;
+
+            background:linear-gradient(
+                180deg,
+                #0f172a,
+                #1e1b4b
+            );
+
+            position:fixed;
+
+            left:0;
+            top:0;
+
+            padding:20px;
+
+            color:white;
+
+            overflow:auto;
+
+        }
+
+        .logo{
+
+            font-size:28px;
+            font-weight:bold;
+
+            margin-bottom:40px;
+
+            text-align:center;
+
+            color:white;
+
+        }
+
+        .logo span{
+
+            color:#facc15;
+
+        }
+
+        .menu a{
+
+            display:flex;
+
+            align-items:center;
+
+            gap:12px;
+
+            text-decoration:none;
+
+            color:white;
+
+            padding:15px;
+
+            margin-top:12px;
+
+            border-radius:12px;
+
+            transition:0.3s;
+
+            background:rgba(
+                255,
+                255,
+                255,
+                0.05
+            );
+
+        }
+
+        .menu a:hover{
+
+            background:#4338ca;
+
+            transform:translateX(5px);
+
+        }
+
+        .conteudo{
+
+            margin-left:260px;
+
+            width:100%;
+
+            padding:30px;
+
+        }
+
+        h1{
+
+            color:#0f172a;
+
+            margin-bottom:20px;
+
+        }
+
+        .card{
+
+            background:white;
+
+            padding:25px;
+
+            border-radius:20px;
+
+            margin-top:20px;
+
+            box-shadow:
+
+            0 4px 20px rgba(
+                0,
+                0,
+                0,
+                0.08
+            );
+
+        }
+
+        input,
+        select{
+
+            width:100%;
+
+            padding:14px;
+
+            margin-top:12px;
+
+            border:1px solid #cbd5e1;
+
+            border-radius:12px;
+
+            font-size:15px;
+
+            outline:none;
+
+            background:white;
+
+        }
+
+        input:focus,
+        select:focus{
+
+            border-color:#4f46e5;
+
+        }
+
+        button{
+
+            width:100%;
+
+            padding:14px;
+
+            border:none;
+
+            border-radius:12px;
+
+            cursor:pointer;
+
+            color:white;
+
+            font-size:15px;
+
+            margin-top:15px;
+
+            transition:0.3s;
+
+        }
+
+        button:hover{
+
+            opacity:0.9;
+
+            transform:scale(1.01);
+
+        }
+
+        .verde{
+
+            background:#22c55e;
+
+        }
+
+        .azul{
+
+            background:#4f46e5;
+
+        }
+
+        .vermelho{
+
+            background:#ef4444;
+
+        }
+
+        .topo{
+
+            width:100%;
+
+            background:white;
+
+            padding:20px;
+
+            border-radius:20px;
+
+            display:flex;
+
+            justify-content:space-between;
+
+            align-items:center;
+
+            box-shadow:
+
+            0 4px 20px rgba(
+                0,
+                0,
+                0,
+                0.05
+            );
+
+        }
+
+        .usuario{
+
+            display:flex;
+
+            align-items:center;
+
+            gap:10px;
+
+            color:#0f172a;
+
+            font-weight:bold;
+
+        }
+
+        .grid{
+
+            display:grid;
+
+            grid-template-columns:
+            repeat(
+                auto-fit,
+                minmax(250px,1fr)
+            );
+
+            gap:20px;
+
+        }
+
+        .tag{
+
+            padding:6px 12px;
+
+            border-radius:999px;
+
+            font-size:13px;
+
+            font-weight:bold;
+
+            display:inline-block;
+
+        }
+
+        .tag-verde{
+
+            background:#dcfce7;
+
+            color:#166534;
+
+        }
+
+        .tag-vermelha{
+
+            background:#fee2e2;
+
+            color:#991b1b;
+
+        }
+
+        .tag-azul{
+
+            background:#dbeafe;
+
+            color:#1d4ed8;
+
+        }
+
+        table{
+
+            width:100%;
+
+            border-collapse:collapse;
+
+            margin-top:20px;
+
+        }
+
+        table th{
+
+            background:#0f172a;
+
+            color:white;
+
+            padding:14px;
+
+            text-align:left;
+
+        }
+
+        table td{
+
+            padding:14px;
+
+            border-bottom:1px solid #e2e8f0;
+
+        }
+
+        table tr:hover{
+
+            background:#f8fafc;
+
+        }
+
+        .btn-pequeno{
+
+            width:auto;
+
+            padding:10px 15px;
+
+            margin-top:5px;
+
+        }
+
+        @media(max-width:900px){
+
+            .menu{
+
+                width:80px;
+
+            }
+
+            .menu a span{
+
+                display:none;
+
+            }
+
+            .logo{
+
+                font-size:18px;
+
+            }
+
+            .conteudo{
+
+                margin-left:80px;
+
+            }
+
+        }
+
+        @media(max-width:700px){
+
+            body{
+
+                flex-direction:column;
+
+            }
+
+            .menu{
+
+                position:relative;
+
+                width:100%;
+
+                height:auto;
+
+                display:flex;
+
+                overflow:auto;
+
+                gap:10px;
+
+            }
+
+            .menu a{
+
+                min-width:140px;
+
+            }
+
+            .conteudo{
+
+                margin-left:0;
+
+                padding:15px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="menu">
+
+        <div class="logo">
+
+            FNM
+            <span>
+                PRODUÇÕES
+            </span>
+
+        </div>
+
+        <a href="/">
+
+            <i class="fa-solid fa-chart-line"></i>
+
+            <span>
+                Dashboard
+            </span>
+
+        </a>
+
+        <a href="/caixa">
+
+            <i class="fa-solid fa-cash-register"></i>
+
+            <span>
+                Caixa
+            </span>
+
+        </a>
+
+        <a href="/produtos">
+
+            <i class="fa-solid fa-box"></i>
+
+            <span>
+                Produtos
+            </span>
+
+        </a>
+<a href="/estoque">
+
+    <i class="fa-solid fa-warehouse"></i>
+
+    <span>
+        Estoque
+    </span>
+
+</a>
+<a href="/etiquetas">
+
+    <i class="fa-solid fa-tag"></i>
+
+    <span>
+        Etiquetas
+    </span>
+
+</a>
+
+
+</a>
+        <a href="/clientes">
+
+            <i class="fa-solid fa-users"></i>
+
+            <span>
+                Clientes
+            </span>
+
+        </a>
+
+        <a href="/relatorios">
+
+            <i class="fa-solid fa-chart-pie"></i>
+
+            <span>
+                Relatórios
+            </span>
+
+        </a>
+
+    </div>
+
+    <div class="conteudo">
+
+        <div class="topo">
+
+            <h2>
+
+                🚀 Sistema PDV
+
+            </h2>
+
+            <div class="usuario">
+
+                <i class="fa-solid fa-user"></i>
+
+                Caixa 01
+
+            </div>
+
+        </div>
+
+        {% block content %}
+        {% endblock %}
+
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,443 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>
+    Relatórios
+</h1>
+
+<div class="grid">
+
+    <div class="card">
+
+        <h2>
+            🔎 Filtros
+        </h2>
+
+        <br>
+
+        <form
+            method="GET"
+            action="/relatorios"
+        >
+
+            <label>
+
+                Data Inicial
+
+            </label>
+
+            <input
+                type="date"
+                name="data_inicial"
+            >
+
+            <label
+                style="
+                    margin-top:15px;
+                    display:block;
+                "
+            >
+
+                Data Final
+
+            </label>
+
+            <input
+                type="date"
+                name="data_final"
+            >
+
+            <label
+                style="
+                    margin-top:15px;
+                    display:block;
+                "
+            >
+
+                Forma de Pagamento
+
+            </label>
+
+            <select
+                name="pagamento"
+                style="
+                    width:100%;
+                    padding:15px;
+                    border-radius:12px;
+                    border:1px solid #dbeafe;
+                    background:#f8fafc;
+                    margin-top:10px;
+                "
+            >
+
+                <option value="">
+                    Todos
+                </option>
+
+                <option value="Dinheiro">
+                    Dinheiro
+                </option>
+
+                <option value="Pix">
+                    Pix
+                </option>
+
+                <option value="Crédito">
+                    Crédito
+                </option>
+
+                <option value="Débito">
+                    Débito
+                </option>
+
+            </select>
+
+            <button
+                class="azul"
+                style="
+                    margin-top:20px;
+                "
+            >
+
+                🔍 Filtrar
+
+            </button>
+
+        </form>
+
+    </div>
+
+    <div
+        style="
+            display:flex;
+            flex-direction:column;
+            gap:20px;
+        "
+    >
+
+        <div class="grid">
+
+            <div class="card">
+
+                <h3>
+                    💰 Total Geral
+                </h3>
+
+                <br>
+
+                <h1
+                    style="
+                        color:#4f46e5;
+                    "
+                >
+
+                    R$ {{ total_geral }}
+
+                </h1>
+
+            </div>
+
+            <div class="card">
+
+                <h3>
+                    💵 Dinheiro
+                </h3>
+
+                <br>
+
+                <h1>
+
+                    R$ {{ total_dinheiro }}
+
+                </h1>
+
+            </div>
+
+            <div class="card">
+
+                <h3>
+                    📲 Pix
+                </h3>
+
+                <br>
+
+                <h1>
+
+                    R$ {{ total_pix }}
+
+                </h1>
+
+            </div>
+
+            <div class="card">
+
+                <h3>
+                    💳 Cartões
+                </h3>
+
+                <br>
+
+                <h1>
+
+                    R$ {{ total_credito + total_debito }}
+
+                </h1>
+
+            </div>
+
+        </div>
+
+        <div class="card">
+
+            <h2>
+                📊 Financeiro
+            </h2>
+
+            <br>
+
+            <canvas id="graficoFinanceiro"></canvas>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="grid">
+
+    <div class="card">
+
+        <h2>
+            🏆 Produtos Mais Vendidos
+        </h2>
+
+        <br>
+
+        {% for produto, quantidade in ranking %}
+
+        <div
+            style="
+                background:#f8fafc;
+                border:1px solid #e2e8f0;
+                border-radius:15px;
+                padding:15px;
+                margin-bottom:15px;
+            "
+        >
+
+            <strong
+                style="
+                    color:#0f172a;
+                "
+            >
+
+                {{ produto }}
+
+            </strong>
+
+            <br><br>
+
+            Quantidade Vendida:
+
+            <strong>
+
+                {{ quantidade }}
+
+            </strong>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    <div class="card">
+
+        <h2>
+            🧾 Histórico de Vendas
+        </h2>
+
+        <br>
+
+        <div
+            style="
+                overflow:auto;
+                max-height:700px;
+            "
+        >
+
+            <table
+                style="
+                    width:100%;
+                    border-collapse:collapse;
+                "
+            >
+
+                <thead>
+
+                    <tr
+                        style="
+                            background:#eef2ff;
+                            color:#1e1b4b;
+                        "
+                    >
+
+                        <th style="padding:15px;">
+                            Produto
+                        </th>
+
+                        <th>
+                            Qtd
+                        </th>
+
+                        <th>
+                            Valor
+                        </th>
+
+                        <th>
+                            Pagamento
+                        </th>
+
+                        <th>
+                            Horário
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for venda in vendas %}
+
+                    <tr
+                        style="
+                            border-bottom:
+                            1px solid #e2e8f0;
+                        "
+                    >
+
+                        <td
+                            style="
+                                padding:15px;
+                            "
+                        >
+
+                            {{ venda.produto }}
+
+                        </td>
+
+                        <td>
+
+                            {{ venda.quantidade }}
+
+                        </td>
+
+                        <td>
+
+                            <strong>
+
+                                R$ {{ venda.valor }}
+
+                            </strong>
+
+                        </td>
+
+                        <td>
+
+                            {% if venda.pagamento == "Pix" %}
+
+                                📲 Pix
+
+                            {% elif venda.pagamento == "Dinheiro" %}
+
+                                💵 Dinheiro
+
+                            {% elif venda.pagamento == "Crédito" %}
+
+                                💳 Crédito
+
+                            {% else %}
+
+                                💳 Débito
+
+                            {% endif %}
+
+                        </td>
+
+                        <td>
+
+                            {{ venda.horario }}
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+const ctx = document.getElementById(
+    'graficoFinanceiro'
+)
+
+new Chart(ctx, {
+
+    type: 'doughnut',
+
+    data: {
+
+        labels: [
+
+            'Dinheiro',
+
+            'Pix',
+
+            'Crédito',
+
+            'Débito'
+
+        ],
+
+        datasets: [{
+
+            data: [
+
+                {{ total_dinheiro }},
+
+                {{ total_pix }},
+
+                {{ total_credito }},
+
+                {{ total_debito }}
+
+            ]
+
+        }]
+
+    },
+
+    options: {
+
+        responsive:true
+
+    }
+
+})
+
+</script>
+
+{% endblock %}
