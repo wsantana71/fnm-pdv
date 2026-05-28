@@ -397,25 +397,51 @@ async function buscarProduto(codigoBarra){
             "categoria"
         ).value = dados.categoria || ""
 
-        if(dados.imagem){
+        const imagem = document.getElementById(
+            "previewImagem"
+        )
 
-            const imagem = document.getElementById(
-                "previewImagem"
-            )
+        const campoImagem = document.getElementById(
+            "imagem"
+        )
+
+        if(dados.imagem){
 
             imagem.src = dados.imagem
 
-            document.getElementById(
-                "imagem"
-            ).value = dados.imagem
+            campoImagem.value = dados.imagem
 
             imagem.style.display = "block"
+
+        }else{
+
+            imagem.src = ""
+
+            campoImagem.value = ""
+
+            imagem.style.display = "none"
 
         }
 
     }catch(erro){
 
         console.log(erro)
+
+        document.getElementById(
+            "nome"
+        ).value = ""
+
+        document.getElementById(
+            "categoria"
+        ).value = ""
+
+        document.getElementById(
+            "imagem"
+        ).value = ""
+
+        document.getElementById(
+            "previewImagem"
+        ).style.display = "none"
 
     }
 
