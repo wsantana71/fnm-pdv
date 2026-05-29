@@ -338,6 +338,10 @@ def cadastrar():
 
         nome=request.form["nome"],
 
+        custo=float(
+            request.form["custo"]
+        ),
+
         preco=float(
             request.form["preco"]
         ),
@@ -349,6 +353,7 @@ def cadastrar():
         categoria=request.form.get(
             "categoria"
         ),
+
         imagem=request.form.get(
             "imagem"
         ),

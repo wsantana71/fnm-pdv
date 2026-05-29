@@ -206,20 +206,28 @@
                     </th>
 
                     <th>
-                        Categoria
-                    </th>
+    Categoria
+</th>
 
-                    <th>
-                        Preço
-                    </th>
+                     <th>
+                     Custo
+                     </th>
 
-                    <th>
-                        Estoque
-                    </th>
+                     <th>
+                     Preço
+                     </th>
 
-                    <th>
-                        Mínimo
-                    </th>
+                     <th>
+                     Lucro
+                     </th>
+
+                     <th>
+                     Estoque
+                     </th>
+
+                     <th>
+                     Mínimo
+                     </th>
 
                     <th>
                         Ações
@@ -262,23 +270,43 @@
 
                     <td>
 
-                        {{ produto.categoria }}
+    {{ produto.categoria }}
 
-                    </td>
+</td>
 
-                    <td>
+<td>
 
-                        <strong>
+    <strong>
 
-                            R$ {{ produto.preco }}
+        R$ {{ "%.2f"|format(produto.custo) }}
 
-                        </strong>
+    </strong>
 
-                    </td>
+</td>
 
-                    <td>
+<td>
 
-                        {% if produto.estoque <= produto.estoque_minimo %}
+    <strong>
+
+        R$ {{ "%.2f"|format(produto.preco) }}
+
+    </strong>
+
+</td>
+
+<td>
+
+    <strong style="color:green;">
+
+        R$ {{ "%.2f"|format(produto.preco - produto.custo) }}
+
+    </strong>
+
+</td>
+
+<td>
+
+    {% if produto.estoque <= produto.estoque_minimo %}
 
                             <span
                                 style="
