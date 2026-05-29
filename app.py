@@ -326,15 +326,33 @@ def produtos():
         produtos=produtos
 
     )
+# ================= GERAR CODIGO =================
 
+def gerar_codigo_fnm():
+
+    ultimo = Produto.query.order_by(
+        Produto.id.desc()
+    ).first()
+
+    if ultimo:
+
+        return f"FNM{ultimo.id + 1:06d}"
+
+    return "FNM000001"
 # ================= CADASTRAR =================
 
 @app.route("/cadastrar", methods=["POST"])
 def cadastrar():
 
+    codigo = request.form["codigo"]
+
+    if not codigo.strip():
+
+        codigo = gerar_codigo_fnm()
+
     produto = Produto(
 
-        codigo=request.form["codigo"],
+        codigo=codigo,
 
         nome=request.form["nome"],
 
