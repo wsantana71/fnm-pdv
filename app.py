@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash
+from flask import Flask, render_template, request, redirect, url_for, session, flash, send_file
 
 from flask_sqlalchemy import SQLAlchemy
 
@@ -7,6 +7,7 @@ from datetime import datetime
 import requests
 
 import barcode
+import pandas as pd
 
 from barcode.writer import ImageWriter
 app = Flask(__name__)
@@ -1012,7 +1013,65 @@ def imprimir_etiquetas():
         produtos=produtos
 
     )
+# ================= EXPORTAR PRODUTOS =================
 
+@app.route("/exportar_produtos")
+def exportar_produtos():
+
+    produtos = Produto.query.all()
+
+    dados = []
+
+    for produto in produtos:
+
+        dados.append({
+
+            "Código": produto.codigo,
+
+            "Nome": produto.nome,
+
+            "Categoria": produto.categoria,
+
+            "Custo": produto.custo,
+
+            "Preço": produto.preco,
+
+            "Lucro": produto.preco - produto.custo,
+
+            "Estoque": produto.estoque
+
+        })
+
+    df = pd.DataFrame(dados)
+
+    arquivo = "produtos.xlsx"
+
+    df.to_excel(
+        arquivo,
+        index=False
+    )
+
+    return send_file(
+
+        arquivo,
+
+        as_attachment=True
+
+    )
+# ================= BACKUP =================
+
+@app.route("/backup")
+def backup():
+
+    return send_file(
+
+        "instance/banco.db",
+
+        as_attachment=True,
+
+        download_name="backup_pdv.db"
+
+    )
 if __name__ == "__main__":
 
     app.run(

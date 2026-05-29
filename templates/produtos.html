@@ -52,12 +52,20 @@
         id="imagem"
     >
 
-    <input
-        type="text"
-        name="codigo"
-        id="codigo"
-        placeholder="Código de barras"
-    >
+<input
+    type="text"
+    name="codigo"
+    id="codigo"
+    placeholder="Código de barras"
+>
+
+<button
+    type="button"
+    onclick="gerarCodigoFNM()"
+    class="azul"
+>
+    🎲 Gerar Código FNM
+</button>
 
     <input
         type="text"
@@ -505,7 +513,15 @@ async function buscarProduto(codigoBarra){
     }
 
 }
+ function gerarCodigoFNM(){
 
+    const numero = Date.now()
+
+    document.getElementById(
+        "codigo"
+    ).value = "FNM" + numero
+
+}
 </script>
 
 {% endblock %}
