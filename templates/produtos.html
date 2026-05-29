@@ -40,68 +40,82 @@
         </div>
 
         <form
-            action="/cadastrar"
-            method="POST"
-        >
-<input
-    type="hidden"
-    name="imagem"
-    id="imagem"
+    action="/cadastrar"
+    method="POST"
 >
-            <input
-                type="text"
-                name="codigo"
-                id="codigo"
-                placeholder="Código de barras"
-                required
-            >
 
-            <input
-                type="text"
-                name="nome"
-                id="nome"
-                placeholder="Nome do produto"
-                required
-            >
+<div class="form-grid">
 
-            <input
-                type="number"
-                step="0.01"
-                name="preco"
-                placeholder="Preço"
-                required
-            >
+    <input
+        type="hidden"
+        name="imagem"
+        id="imagem"
+    >
 
-            <input
-                type="number"
-                name="estoque"
-                placeholder="Estoque"
-                required
-            >
+    <input
+        type="text"
+        name="codigo"
+        id="codigo"
+        placeholder="Código de barras"
+        required
+    >
 
-            <input
-                type="text"
-                name="categoria"
-                id="categoria"
-                placeholder="Categoria"
-            >
+    <input
+        type="text"
+        name="nome"
+        id="nome"
+        placeholder="Nome do produto"
+        required
+    >
 
-            <input
-                type="number"
-                name="estoque_minimo"
-                placeholder="Estoque mínimo"
-            >
+    <input
+        type="number"
+        step="0.01"
+        name="custo"
+        placeholder="Custo"
+        required
+    >
 
-            <button
-                type="submit"
-                class="verde"
-            >
+    <input
+        type="number"
+        step="0.01"
+        name="preco"
+        placeholder="Preço"
+        required
+    >
 
-                ✅ Cadastrar Produto
+    <input
+        type="number"
+        name="estoque"
+        placeholder="Estoque"
+        required
+    >
 
-            </button>
+    <input
+        type="text"
+        name="categoria"
+        id="categoria"
+        placeholder="Categoria"
+    >
 
-        </form>
+    <input
+        type="number"
+        name="estoque_minimo"
+        placeholder="Estoque mínimo"
+    >
+
+    <button
+        type="submit"
+        class="verde"
+    >
+
+        ✅ Cadastrar Produto
+
+    </button>
+
+</div>
+
+</form>
 
     </div>
 
@@ -358,7 +372,25 @@
     </div>
 
 </div>
+<style>
 
+.form-grid{
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:15px;
+
+}
+
+.form-grid button{
+
+    grid-column:1 / -1;
+
+}
+
+</style>
 <script>
 
 const codigo = document.getElementById(

@@ -54,6 +54,11 @@ class Produto(db.Model):
         db.Float
     )
 
+    custo = db.Column(
+        db.Float,
+        default=0
+    )
+
     estoque = db.Column(
         db.Integer
     )
