@@ -4,3 +4,5 @@ requests
 gunicorn
 python-barcode
 pillow
+pandas
+openpyxl
