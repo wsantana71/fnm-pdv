@@ -14,7 +14,12 @@ app = Flask(__name__)
 
 app.secret_key = "fnm_producoes"
 
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///banco.db"
+import os
+
+app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv(
+    "DATABASE_URL",
+    "sqlite:///banco.db"
+)
 
 db = SQLAlchemy(app)
 
