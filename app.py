@@ -1,8 +1,10 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash, send_file
+from flask import Flask, render_template, request, redirect, url_for, session, flash, send_file, jsonify
 
 from flask_sqlalchemy import SQLAlchemy
 
 from datetime import datetime
+
+from flask import jsonify
 
 import requests
 
@@ -246,6 +248,36 @@ def entrada_mercadorias():
     return render_template(
         "entrada_mercadorias.html"
     )
+
+
+@app.route("/buscar_produto_entrada")
+def buscar_produto_entrada():
+
+    codigo = request.args.get(
+        "codigo"
+    )
+
+    produto = Produto.query.filter_by(
+        codigo=codigo
+    ).first()
+
+    if produto:
+
+        return jsonify({
+
+            "encontrado": True,
+
+            "nome": produto.nome,
+
+            "estoque": produto.estoque
+
+        })
+
+    return jsonify({
+
+        "encontrado": False
+
+    })
 # ================= CLIENTES =================
 
 class Cliente(db.Model):

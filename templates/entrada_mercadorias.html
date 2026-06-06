@@ -15,11 +15,14 @@
     <input
         type="text"
         name="codigo"
+        id="codigo"
         autofocus
         required
     >
 
-    <br><br>
+    <div id="produto-info"></div>
+
+    <br>
 
     <label>
         Quantidade Recebida
@@ -52,5 +55,67 @@
     </button>
 
 </form>
+
+<script>
+
+document
+.getElementById("codigo")
+.addEventListener("change", function() {
+
+    let codigo = this.value;
+
+    fetch(
+        "/buscar_produto_entrada?codigo=" +
+        codigo
+    )
+
+    .then(
+        response => response.json()
+    )
+
+    .then(data => {
+
+        let div = document.getElementById(
+            "produto-info"
+        );
+
+        if(data.encontrado){
+
+            div.innerHTML = `
+                <br>
+                <div style="
+                    background:#d4edda;
+                    padding:10px;
+                    border-radius:5px;
+                    margin-top:10px;
+                ">
+                    ✅ <b>${data.nome}</b>
+                    <br>
+                    Estoque Atual:
+                    ${data.estoque}
+                </div>
+            `;
+
+        } else {
+
+            div.innerHTML = `
+                <br>
+                <div style="
+                    background:#f8d7da;
+                    padding:10px;
+                    border-radius:5px;
+                    margin-top:10px;
+                ">
+                    ❌ Produto não cadastrado
+                </div>
+            `;
+
+        }
+
+    });
+
+});
+
+</script>
 
 {% endblock %}
