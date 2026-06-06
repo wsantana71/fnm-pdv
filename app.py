@@ -78,9 +78,10 @@ class Produto(db.Model):
     )
 
     estoque_minimo = db.Column(
-        db.Integer
-    )
-    class MovimentacaoEstoque(db.Model):
+    db.Integer
+)
+
+class MovimentacaoEstoque(db.Model):
 
     id = db.Column(
         db.Integer,
