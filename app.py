@@ -178,6 +178,22 @@ class Venda(db.Model):
     pagamento = db.Column(
         db.String(50)
     )
+    # ================= ENTRADA MERCADORIAS =================
+
+@app.route("/entrada_mercadorias")
+def entrada_mercadorias():
+
+    produtos = Produto.query.order_by(
+        Produto.nome
+    ).all()
+
+    return render_template(
+
+        "entrada_mercadorias.html",
+
+        produtos=produtos
+
+    )
 # ================= CLIENTES =================
 
 class Cliente(db.Model):

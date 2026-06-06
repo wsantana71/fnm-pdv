@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>
+    📦 Entrada de Mercadorias
+</h2>
+
+<form>
+
+    <label>
+        Produto
+    </label>
+
+    <select>
+
+        {% for produto in produtos %}
+
+        <option value="{{ produto.id }}">
+            {{ produto.nome }}
+        </option>
+
+        {% endfor %}
+
+    </select>
+
+    <br><br>
+
+    <label>
+        Quantidade
+    </label>
+
+    <input
+        type="number"
+        placeholder="Quantidade"
+    >
+
+    <br><br>
+
+    <label>
+        Observação
+    </label>
+
+    <textarea
+        placeholder="Fornecedor, nota fiscal..."
+    ></textarea>
+
+    <br><br>
+
+    <button
+        type="submit"
+        class="azul"
+    >
+        Registrar Entrada
+    </button>
+
+</form>
+
+{% endblock %}
