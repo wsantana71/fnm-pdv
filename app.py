@@ -80,6 +80,35 @@ class Produto(db.Model):
     estoque_minimo = db.Column(
         db.Integer
     )
+    class MovimentacaoEstoque(db.Model):
+
+    id = db.Column(
+        db.Integer,
+        primary_key=True
+    )
+
+    produto_id = db.Column(
+        db.Integer,
+        db.ForeignKey("produto.id")
+    )
+
+    tipo = db.Column(
+        db.String(20)
+    )
+
+    quantidade = db.Column(
+        db.Integer
+    )
+
+    observacao = db.Column(
+        db.String(300)
+    )
+
+    data = db.Column(
+        db.DateTime,
+        default=datetime.now
+    )
+    
 # ================= LOGIN =================
 
 @app.route(
