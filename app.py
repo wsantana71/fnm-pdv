@@ -181,19 +181,70 @@ class Venda(db.Model):
     )
     # ================= ENTRADA MERCADORIAS =================
 
-@app.route("/entrada_mercadorias")
+@app.route(
+    "/entrada_mercadorias",
+    methods=["GET", "POST"]
+)
 def entrada_mercadorias():
 
-    produtos = Produto.query.order_by(
-        Produto.nome
-    ).all()
+    if request.method == "POST":
+
+        codigo = request.form.get(
+            "codigo"
+        )
+
+        quantidade = int(
+            request.form.get(
+                "quantidade"
+            )
+        )
+
+        observacao = request.form.get(
+            "observacao"
+        )
+
+        produto = Produto.query.filter_by(
+            codigo=codigo
+        ).first()
+
+        if produto:
+
+            produto.estoque += quantidade
+
+            movimentacao = MovimentacaoEstoque(
+
+                produto_id=produto.id,
+
+                tipo="ENTRADA",
+
+                quantidade=quantidade,
+
+                observacao=observacao
+
+            )
+
+            db.session.add(
+                movimentacao
+            )
+
+            db.session.commit()
+
+            flash(
+                f"Entrada registrada para {produto.nome}"
+            )
+
+        else:
+
+            flash(
+                "Produto não encontrado!"
+            )
+
+        return redirect(
+            "/entrada_mercadorias"
+        )
 
     return render_template(
-
-        "entrada_mercadorias.html",
-
-        produtos=produtos
-
+        "entrada_mercadorias.html"
     )
 # ================= CLIENTES =================
 

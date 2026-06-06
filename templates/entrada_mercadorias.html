@@ -6,33 +6,29 @@
     📦 Entrada de Mercadorias
 </h2>
 
-<form>
+<form method="POST">
 
     <label>
-        Produto
+        Código de Barras
     </label>
 
-    <select>
-
-        {% for produto in produtos %}
-
-        <option value="{{ produto.id }}">
-            {{ produto.nome }}
-        </option>
-
-        {% endfor %}
-
-    </select>
+    <input
+        type="text"
+        name="codigo"
+        autofocus
+        required
+    >
 
     <br><br>
 
     <label>
-        Quantidade
+        Quantidade Recebida
     </label>
 
     <input
         type="number"
-        placeholder="Quantidade"
+        name="quantidade"
+        required
     >
 
     <br><br>
@@ -42,6 +38,7 @@
     </label>
 
     <textarea
+        name="observacao"
         placeholder="Fornecedor, nota fiscal..."
     ></textarea>
 
