@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>
+    🏢 Fornecedores
+</h2>
+
+<form method="POST">
+
+    <label>
+        Nome
+    </label>
+
+    <input
+        type="text"
+        name="nome"
+        required
+    >
+
+    <br><br>
+
+    <label>
+        Telefone
+    </label>
+
+    <input
+        type="text"
+        name="telefone"
+    >
+
+    <br><br>
+
+    <label>
+        Cidade
+    </label>
+
+    <input
+        type="text"
+        name="cidade"
+    >
+
+    <br><br>
+
+    <label>
+        Observação
+    </label>
+
+    <textarea
+        name="observacao"
+    ></textarea>
+
+    <br><br>
+
+    <button
+        type="submit"
+        class="azul"
+    >
+        Salvar
+    </button>
+
+</form>
+
+<br><br>
+
+<table>
+
+    <tr>
+
+        <th>Nome</th>
+
+        <th>Telefone</th>
+
+        <th>Cidade</th>
+
+    </tr>
+
+    {% for fornecedor in fornecedores %}
+
+    <tr>
+
+        <td>{{ fornecedor.nome }}</td>
+
+        <td>{{ fornecedor.telefone }}</td>
+
+        <td>{{ fornecedor.cidade }}</td>
+
+    </tr>
+
+    {% endfor %}
+
+</table>
+
+{% endblock %}

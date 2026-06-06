@@ -94,6 +94,10 @@ class MovimentacaoEstoque(db.Model):
         db.Integer,
         db.ForeignKey("produto.id")
     )
+    fornecedor_id = db.Column(
+    db.Integer,
+    db.ForeignKey("fornecedor.id")
+    )
 
     tipo = db.Column(
         db.String(20)
@@ -111,7 +115,28 @@ class MovimentacaoEstoque(db.Model):
         db.DateTime,
         default=datetime.now
     )
-    
+class Fornecedor(db.Model):
+
+    id = db.Column(
+        db.Integer,
+        primary_key=True
+    )
+
+    nome = db.Column(
+        db.String(200)
+    )
+
+    telefone = db.Column(
+        db.String(50)
+    )
+
+    cidade = db.Column(
+        db.String(100)
+    )
+
+    observacao = db.Column(
+        db.String(300)
+    )
 # ================= LOGIN =================
 
 @app.route(
@@ -195,6 +220,10 @@ def entrada_mercadorias():
             "codigo"
         )
 
+        fornecedor_id = request.form.get(
+            "fornecedor_id"
+        )
+
         quantidade = int(
             request.form.get(
                 "quantidade"
@@ -216,6 +245,8 @@ def entrada_mercadorias():
             movimentacao = MovimentacaoEstoque(
 
                 produto_id=produto.id,
+
+                fornecedor_id=fornecedor_id,
 
                 tipo="ENTRADA",
 
@@ -245,39 +276,72 @@ def entrada_mercadorias():
             "/entrada_mercadorias"
         )
 
+    fornecedores = Fornecedor.query.order_by(
+        Fornecedor.nome
+    ).all()
+
     return render_template(
-        "entrada_mercadorias.html"
+
+        "entrada_mercadorias.html",
+
+        fornecedores=fornecedores
+
     )
+# ================= FORNECEDORES =================
 
+@app.route(
+    "/fornecedores",
+    methods=["GET", "POST"]
+)
+def fornecedores():
 
-@app.route("/buscar_produto_entrada")
-def buscar_produto_entrada():
+    if request.method == "POST":
 
-    codigo = request.args.get(
-        "codigo"
+        fornecedor = Fornecedor(
+
+            nome=request.form.get(
+                "nome"
+            ),
+
+            telefone=request.form.get(
+                "telefone"
+            ),
+
+            cidade=request.form.get(
+                "cidade"
+            ),
+
+            observacao=request.form.get(
+                "observacao"
+            )
+
+        )
+
+        db.session.add(
+            fornecedor
+        )
+
+        db.session.commit()
+
+        flash(
+            "Fornecedor cadastrado!"
+        )
+
+        return redirect(
+            "/fornecedores"
+        )
+
+    fornecedores = Fornecedor.query.order_by(
+        Fornecedor.nome
+    ).all()
+
+    return render_template(
+
+        "fornecedores.html",
+
+        fornecedores=fornecedores
+
     )
-
-    produto = Produto.query.filter_by(
-        codigo=codigo
-    ).first()
-
-    if produto:
-
-        return jsonify({
-
-            "encontrado": True,
-
-            "nome": produto.nome,
-
-            "estoque": produto.estoque
-
-        })
-
-    return jsonify({
-
-        "encontrado": False
-
-    })
 # ================= CLIENTES =================
 
 class Cliente(db.Model):
