@@ -94,10 +94,6 @@ class MovimentacaoEstoque(db.Model):
         db.Integer,
         db.ForeignKey("produto.id")
     )
-    fornecedor_id = db.Column(
-    db.Integer,
-    db.ForeignKey("fornecedor.id")
-    )
 
     tipo = db.Column(
         db.String(20)
@@ -207,7 +203,6 @@ class Venda(db.Model):
         db.String(50)
     )
     # ================= ENTRADA MERCADORIAS =================
-
 @app.route(
     "/entrada_mercadorias",
     methods=["GET", "POST"]
@@ -218,10 +213,6 @@ def entrada_mercadorias():
 
         codigo = request.form.get(
             "codigo"
-        )
-
-        fornecedor_id = request.form.get(
-            "fornecedor_id"
         )
 
         quantidade = int(
@@ -245,8 +236,6 @@ def entrada_mercadorias():
             movimentacao = MovimentacaoEstoque(
 
                 produto_id=produto.id,
-
-                fornecedor_id=fornecedor_id,
 
                 tipo="ENTRADA",
 
@@ -281,11 +270,8 @@ def entrada_mercadorias():
     ).all()
 
     return render_template(
-
         "entrada_mercadorias.html",
-
         fornecedores=fornecedores
-
     )
 # ================= FORNECEDORES =================
 
@@ -685,7 +671,34 @@ def scanner():
             ] += 1
 
     return redirect("/caixa")
+@app.route("/buscar_produto_entrada")
+def buscar_produto_entrada():
 
+    codigo = request.args.get(
+        "codigo"
+    )
+
+    produto = Produto.query.filter_by(
+        codigo=codigo
+    ).first()
+
+    if produto:
+
+        return jsonify({
+
+            "encontrado": True,
+
+            "nome": produto.nome,
+
+            "estoque": produto.estoque
+
+        })
+
+    return jsonify({
+
+        "encontrado": False
+
+    })
 # ================= VENDER =================
 
 @app.route("/vender/<int:id>", methods=["POST"])
