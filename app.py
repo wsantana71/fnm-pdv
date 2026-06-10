@@ -1248,19 +1248,32 @@ def imprimir_etiquetas():
         "produtos"
     )
 
-    produtos = Produto.query.filter(
+    produtos_impressao = []
 
-        Produto.id.in_(
-            selecionados
+    for produto_id in selecionados:
+
+        produto = Produto.query.get(
+            int(produto_id)
         )
 
-    ).all()
+        quantidade = int(
+            request.form.get(
+                f"quantidade_{produto_id}",
+                1
+            )
+        )
+
+        for i in range(quantidade):
+
+            produtos_impressao.append(
+                produto
+            )
 
     return render_template(
 
         "imprimir_etiquetas.html",
 
-        produtos=produtos
+        produtos=produtos_impressao
 
     )
 # ================= EXPORTAR PRODUTOS =================
