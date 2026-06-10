@@ -278,10 +278,17 @@ def entrada_mercadorias():
 @app.route("/historico_entradas")
 def historico_entradas():
 
-    return """
-    <h1>HISTÓRICO FUNCIONANDO</h1>
-    <p>Teste OK</p>
-    """
+    entradas = (
+        MovimentacaoEstoque.query
+        .filter_by(tipo="ENTRADA")
+        .order_by(MovimentacaoEstoque.data.desc())
+        .all()
+    )
+
+    return render_template(
+        "historico_entradas.html",
+        entradas=entradas
+    )
 # ================= FORNECEDORES =================
 
 @app.route(

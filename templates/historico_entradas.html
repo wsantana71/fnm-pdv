@@ -2,56 +2,23 @@
 
 {% block content %}
 
-<h2>
-    📋 Histórico de Entradas
-</h2>
+<h2>📋 Histórico de Entradas</h2>
 
-<table
-    border="1"
-    cellpadding="10"
-    cellspacing="0"
-    width="100%"
->
+<p>Total de registros: {{ entradas|length }}</p>
 
+<table>
     <tr>
-        <th>Data</th>
-        <th>Produto</th>
+        <th>ID Produto</th>
         <th>Quantidade</th>
         <th>Observação</th>
     </tr>
 
     {% for entrada in entradas %}
-
-    {% set produto = buscar_produto(
-        entrada.produto_id
-    ) %}
-
     <tr>
-
-        <td>
-            {{ entrada.data.strftime(
-                "%d/%m/%Y %H:%M"
-            ) }}
-        </td>
-
-        <td>
-            {% if produto %}
-                {{ produto.nome }}
-            {% else %}
-                Produto removido
-            {% endif %}
-        </td>
-
-        <td>
-            {{ entrada.quantidade }}
-        </td>
-
-        <td>
-            {{ entrada.observacao }}
-        </td>
-
+        <td>{{ entrada.produto_id }}</td>
+        <td>{{ entrada.quantidade }}</td>
+        <td>{{ entrada.observacao }}</td>
     </tr>
-
     {% endfor %}
 
 </table>
