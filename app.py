@@ -273,6 +273,22 @@ def entrada_mercadorias():
         "entrada_mercadorias.html",
         fornecedores=fornecedores
     )
+# ================= HISTORICO ENTRADAS =================
+
+@app.route("/historico_entradas")
+def historico_entradas():
+
+    entradas = (
+        MovimentacaoEstoque.query
+        .filter_by(tipo="ENTRADA")
+        .order_by(MovimentacaoEstoque.data.desc())
+        .all()
+    )
+
+    return render_template(
+        "historico_entradas.html",
+        entradas=entradas
+    )
 # ================= FORNECEDORES =================
 
 @app.route(
@@ -1082,6 +1098,18 @@ def cadastrar_cliente():
     db.session.commit()
 
     return redirect("/clientes")
+    # ================= UTILIDADES =================
+
+@app.context_processor
+def utilidades():
+
+    def buscar_produto(produto_id):
+
+        return Produto.query.get(produto_id)
+
+    return dict(
+        buscar_produto=buscar_produto
+    )
 # ================= BANCO =================
 
 with app.app_context():
