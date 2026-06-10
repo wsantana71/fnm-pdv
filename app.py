@@ -279,9 +279,20 @@ def entrada_mercadorias():
 def historico_entradas():
 
     entradas = (
-        MovimentacaoEstoque.query
-        .filter_by(tipo="ENTRADA")
-        .order_by(MovimentacaoEstoque.data.desc())
+        db.session.query(
+            MovimentacaoEstoque,
+            Produto.nome
+        )
+        .join(
+            Produto,
+            Produto.id == MovimentacaoEstoque.produto_id
+        )
+        .filter(
+            MovimentacaoEstoque.tipo == "ENTRADA"
+        )
+        .order_by(
+            MovimentacaoEstoque.data.desc()
+        )
         .all()
     )
 
