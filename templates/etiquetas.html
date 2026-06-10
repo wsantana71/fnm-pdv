@@ -29,74 +29,54 @@
             "
         >
 
-<div>
+            <div>
 
-    <strong>
+                <strong>
 
-        {{ produto.nome }}
+                    {{ produto.nome }}
 
-    </strong>
+                </strong>
 
-    <br>
+                <br>
 
-    Código:
-    {{ produto.codigo }}
+                Código:
+                {{ produto.codigo }}
 
-</div>
+            </div>
 
-<div
-    style="
-        display:flex;
-        align-items:center;
-        gap:15px;
-    "
->
+            <div
+                style="
+                    display:flex;
+                    align-items:center;
+                    gap:10px;
+                "
+            >
 
-    <input
-        type="number"
-        name="quantidade_{{ produto.id }}"
-        value="1"
-        min="1"
-        style="
-            width:80px;
-        "
-    >
+                <label>
+                    Qtde:
+                </label>
 
-    <div
-    style="
-        display:flex;
-        align-items:center;
-        gap:10px;
-    "
->
+                <input
+                    type="number"
+                    name="quantidade_{{ produto.id }}"
+                    value="1"
+                    min="1"
+                    style="
+                        width:70px;
+                    "
+                >
 
-    <label>
-        Qtde:
-    </label>
+                <input
+                    type="checkbox"
+                    name="produtos"
+                    value="{{ produto.id }}"
+                    style="
+                        width:25px;
+                        height:25px;
+                    "
+                >
 
-    <input
-        type="number"
-        name="quantidade_{{ produto.id }}"
-        value="1"
-        min="1"
-        style="
-            width:70px;
-        "
-    >
-
-    <input
-        type="checkbox"
-        name="produtos"
-        value="{{ produto.id }}"
-        style="
-            width:25px;
-            height:25px;
-        "
-    >
-
-</div>
-
-</div>
+            </div>
 
         </div>
 
