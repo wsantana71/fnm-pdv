@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>
+
+    📦 Reservas
+
+</h1>
+
+<div class="card">
+
+    <h3>
+        Reservas Cadastradas
+    </h3>
+
+    <br>
+
+    {% if reservas %}
+
+        <table>
+
+            <tr>
+
+                <th>ID</th>
+
+                <th>Cliente</th>
+
+                <th>Valor Total</th>
+
+                <th>Status</th>
+
+            </tr>
+
+            {% for reserva in reservas %}
+
+            <tr>
+
+                <td>
+                    {{ reserva.id }}
+                </td>
+
+                <td>
+                    {{ reserva.cliente }}
+                </td>
+
+                <td>
+                    R$ {{ reserva.valor_total }}
+                </td>
+
+                <td>
+                    {{ reserva.status }}
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </table>
+
+    {% else %}
+
+        <p>
+            Nenhuma reserva cadastrada.
+        </p>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

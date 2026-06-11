@@ -202,6 +202,54 @@ class Venda(db.Model):
     pagamento = db.Column(
         db.String(50)
     )
+    # ================= RESERVAS =================
+class Reserva(db.Model):
+
+    id = db.Column(
+        db.Integer,
+        primary_key=True
+    )
+
+    cliente = db.Column(
+        db.String(200)
+    )
+
+    produtos = db.Column(
+        db.Text
+    )
+
+    valor_total = db.Column(
+        db.Float
+    )
+
+    valor_entrada = db.Column(
+        db.Float
+    )
+
+    percentual_entrada = db.Column(
+        db.Float
+    )
+
+    saldo = db.Column(
+        db.Float
+    )
+
+    retirada = db.Column(
+        db.String(50)
+    )
+
+    observacao = db.Column(
+        db.String(500)
+    )
+
+    status = db.Column(
+        db.String(50),
+        default="RESERVADA"
+    )
+
+    data = db.Column(
+        db.String(50)
+    )
     # ================= ENTRADA MERCADORIAS =================
 @app.route(
     "/entrada_mercadorias",
@@ -1143,6 +1191,19 @@ with app.app_context():
         db.session.commit()
 
 # ================= START =================
+# ================= RESERVAS =================
+
+@app.route("/reservas")
+def reservas():
+
+    reservas = Reserva.query.order_by(
+        Reserva.id.desc()
+    ).all()
+
+    return render_template(
+        "reservas.html",
+        reservas=reservas
+    )
 # ================= ESTOQUE =================
 
 @app.route("/estoque")
