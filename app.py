@@ -250,6 +250,7 @@ class Reserva(db.Model):
     data = db.Column(
         db.String(50)
     )
+    
     # ================= ENTRADA MERCADORIAS =================
 @app.route(
     "/entrada_mercadorias",
@@ -1191,6 +1192,7 @@ with app.app_context():
         db.session.commit()
 
 # ================= START =================
+
 # ================= RESERVAS =================
 
 @app.route("/reservas")
@@ -1203,6 +1205,81 @@ def reservas():
     return render_template(
         "reservas.html",
         reservas=reservas
+    )
+
+
+@app.route(
+    "/nova_reserva",
+    methods=["GET", "POST"]
+)
+def nova_reserva():
+
+    if request.method == "POST":
+
+        cliente = request.form.get(
+            "cliente"
+        )
+
+        valor_total = float(
+            request.form.get(
+                "valor_total"
+            )
+        )
+
+        valor_entrada = float(
+            request.form.get(
+                "valor_entrada"
+            )
+        )
+
+        percentual = (
+            valor_entrada /
+            valor_total
+        ) * 100
+
+        saldo = (
+            valor_total -
+            valor_entrada
+        )
+
+        retirada = request.form.get(
+            "retirada"
+        )
+
+        observacao = request.form.get(
+            "observacao"
+        )
+
+        reserva = Reserva(
+
+            cliente=cliente,
+
+            valor_total=valor_total,
+
+            valor_entrada=valor_entrada,
+
+            percentual_entrada=percentual,
+
+            saldo=saldo,
+
+            retirada=retirada,
+
+            observacao=observacao,
+
+            data=datetime.now().strftime(
+                "%d/%m/%Y %H:%M"
+            )
+
+        )
+
+        db.session.add(reserva)
+
+        db.session.commit()
+
+        return redirect("/reservas")
+
+    return render_template(
+        "nova_reserva.html"
     )
 # ================= ESTOQUE =================
 
