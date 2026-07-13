@@ -6,6 +6,8 @@ from datetime import datetime
 
 from flask import jsonify
 
+from collections import Counter
+
 import requests
 
 import barcode
@@ -81,6 +83,11 @@ class Produto(db.Model):
 
     estoque_minimo = db.Column(
     db.Integer
+)
+    itens_reserva = db.relationship(
+    "ItemReserva",
+    backref="produto",
+    lazy=True
 )
 
 class MovimentacaoEstoque(db.Model):
@@ -249,6 +256,43 @@ class Reserva(db.Model):
 
     data = db.Column(
         db.String(50)
+    )
+    itens = db.relationship(
+    "ItemReserva",
+    backref="reserva",
+    lazy=True,
+    cascade="all, delete-orphan"
+)
+    # ================= ITENS DA RESERVA =================
+
+class ItemReserva(db.Model):
+
+    id = db.Column(
+        db.Integer,
+        primary_key=True
+    )
+
+    reserva_id = db.Column(
+        db.Integer,
+        db.ForeignKey("reserva.id")
+    )
+
+    produto_id = db.Column(
+        db.Integer,
+        db.ForeignKey("produto.id")
+    )
+
+    quantidade = db.Column(
+        db.Integer,
+        default=1
+    )
+
+    valor_unitario = db.Column(
+        db.Float
+    )
+
+    subtotal = db.Column(
+        db.Float
     )
     
     # ================= ENTRADA MERCADORIAS =================
@@ -1280,6 +1324,120 @@ def nova_reserva():
 
     return render_template(
         "nova_reserva.html"
+    )
+# ================= INVENTÁRIO =================
+def validar_inventario(contagem):
+
+    resultado = []
+
+    nao_cadastrados = []
+
+    for codigo, quantidade in contagem.items():
+
+        produto = Produto.query.filter_by(
+            codigo=codigo
+        ).first()
+
+        if produto:
+
+            diferenca = quantidade - produto.estoque
+
+            resultado.append({
+
+                "codigo": codigo,
+
+                "produto": produto.nome,
+
+                "estoque": produto.estoque,
+
+                "inventario": quantidade,
+
+                "diferenca": diferenca,
+
+                "status": "OK"
+
+            })
+
+        else:
+
+            nao_cadastrados.append({
+
+                "codigo": codigo,
+
+                "inventario": quantidade
+
+            })
+
+    return resultado, nao_cadastrados
+
+
+
+@app.route("/inventario")
+def inventario():
+
+    return render_template(
+        "inventario.html"
+    )
+
+
+@app.route(
+    "/inventario_txt",
+    methods=["GET", "POST"]
+)
+def inventario_txt():
+
+    if request.method == "POST":
+
+        arquivo = request.files.get("arquivo")
+
+        if not arquivo:
+
+            return "Nenhum arquivo selecionado."
+
+        try:
+
+            conteudo = arquivo.read().decode("utf-8")
+
+        except UnicodeDecodeError:
+
+            arquivo.seek(0)
+
+            conteudo = arquivo.read().decode("latin-1")
+
+        codigos = []
+
+        for linha in conteudo.splitlines():
+
+            codigo = linha.strip()
+
+            if codigo:
+
+                codigos.append(codigo)
+
+        contagem = Counter(codigos)
+
+        resultado, nao_cadastrados = validar_inventario(
+            contagem
+        )
+
+        return render_template(
+
+            "inventario_validacao.html",
+
+            nome_arquivo=arquivo.filename,
+
+            total_lidos=len(codigos),
+
+            produtos_diferentes=len(contagem),
+
+            resultado=resultado,
+
+            nao_cadastrados=nao_cadastrados
+
+        )
+
+    return render_template(
+        "inventario_txt.html"
     )
 # ================= ESTOQUE =================
 

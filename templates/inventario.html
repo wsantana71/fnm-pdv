@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>
+
+    📦 Inventário de Estoque
+
+</h1>
+
+<div class="card">
+
+    <h3>
+
+        Como deseja realizar o inventário?
+
+    </h3>
+
+    <br>
+
+    <a href="/inventario_txt">
+
+        <button class="azul">
+
+            📄 Importar Arquivo TXT
+
+        </button>
+
+    </a>
+
+    <br><br>
+
+    <a href="/inventario_excel">
+
+        <button class="verde">
+
+            📊 Importar Planilha Excel
+
+        </button>
+
+    </a>
+
+    <br><br>
+
+    <a href="/inventario_manual">
+
+        <button class="laranja">
+
+            ⌨ Digitação Manual
+
+        </button>
+
+    </a>
+
+    <br><br>
+
+    <a href="/historico_inventario">
+
+        <button>
+
+            📜 Histórico de Inventários
+
+        </button>
+
+    </a>
+
+</div>
+
+{% endblock %}

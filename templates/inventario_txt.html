@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>📄 Importar Inventário TXT</h1>
+
+<div class="card">
+
+    <form method="POST" enctype="multipart/form-data">
+
+        <p>Selecione o arquivo exportado pelo coletor.</p>
+
+        <br>
+
+        <input
+            type="file"
+            name="arquivo"
+            accept=".txt"
+            required
+        >
+
+        <br><br>
+
+        <button class="azul">
+
+            📥 Importar Arquivo
+
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}

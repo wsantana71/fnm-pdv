@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>📦 Resultado do Inventário</h1>
+
+<div class="card">
+
+    <p>
+        <strong>Arquivo:</strong>
+        {{ nome_arquivo }}
+    </p>
+
+    <p>
+        <strong>Total de códigos lidos:</strong>
+        {{ total_lidos }}
+    </p>
+
+    <p>
+        <strong>Produtos diferentes:</strong>
+        {{ produtos_diferentes }}
+    </p>
+
+</div>
+
+<br>
+
+<div class="card">
+
+    <h3>Produtos Encontrados</h3>
+
+    <table style="width:100%; border-collapse:collapse;">
+
+        <tr style="background:#2563eb;color:white;">
+
+            <th>Código</th>
+            <th>Produto</th>
+            <th>Estoque</th>
+            <th>Inventário</th>
+            <th>Diferença</th>
+
+        </tr>
+
+        {% for item in resultado %}
+
+        <tr>
+
+            <td>{{ item.codigo }}</td>
+
+            <td>{{ item.produto }}</td>
+
+            <td style="text-align:center;">
+                {{ item.estoque }}
+            </td>
+
+            <td style="text-align:center;">
+                {{ item.inventario }}
+            </td>
+
+            <td style="text-align:center;">
+                {{ item.diferenca }}
+            </td>
+
+        </tr>
+
+        {% endfor %}
+
+    </table>
+
+</div>
+
+{% if nao_cadastrados %}
+
+<br>
+
+<div class="card">
+
+    <h3 style="color:red;">
+
+        ⚠ Produtos Não Cadastrados
+
+    </h3>
+
+    <table style="width:100%; border-collapse:collapse;">
+
+        <tr>
+
+            <th>Código</th>
+
+            <th>Quantidade</th>
+
+        </tr>
+
+        {% for item in nao_cadastrados %}
+
+        <tr>
+
+            <td>{{ item.codigo }}</td>
+
+            <td>{{ item.inventario }}</td>
+
+        </tr>
+
+        {% endfor %}
+
+    </table>
+
+</div>
+
+{% endif %}
+
+{% endblock %}
