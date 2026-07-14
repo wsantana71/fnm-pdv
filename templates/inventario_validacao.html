@@ -108,5 +108,52 @@
 </div>
 
 {% endif %}
+{% if nao_cadastrados|length == 0 and resultado|length > 0 %}
 
+<br>
+
+<div style="text-align:center;">
+
+    <form action="/atualizar_inventario" method="POST">
+
+        <button
+            style="
+                background:green;
+                color:white;
+                padding:15px 30px;
+                border:none;
+                border-radius:8px;
+                font-size:18px;
+                cursor:pointer;
+            ">
+
+            ✅ Atualizar Estoque
+
+        </button>
+
+    </form>
+
+</div>
+
+{% else %}
+
+<br>
+
+<div
+    style="
+        background:#ffe8e8;
+        color:#b00020;
+        padding:15px;
+        border-radius:8px;
+        text-align:center;
+        font-weight:bold;
+    ">
+
+    ⚠ Existem produtos não cadastrados.
+
+    Cadastre todos antes de atualizar o estoque.
+
+</div>
+
+{% endif %}
 {% endblock %}

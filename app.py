@@ -118,6 +118,7 @@ class MovimentacaoEstoque(db.Model):
         db.DateTime,
         default=datetime.now
     )
+
 class Fornecedor(db.Model):
 
     id = db.Column(
@@ -1419,6 +1420,9 @@ def inventario_txt():
         resultado, nao_cadastrados = validar_inventario(
             contagem
         )
+        
+        session["inventario_resultado"] = resultado   
+        session["inventario_nao_cadastrados"] = nao_cadastrados
 
         return render_template(
 
@@ -1438,6 +1442,75 @@ def inventario_txt():
 
     return render_template(
         "inventario_txt.html"
+    )
+@app.route(
+    "/atualizar_inventario",
+    methods=["POST"]
+)
+def atualizar_inventario():
+
+    resultado = session.get(
+        "inventario_resultado",
+        []
+    )
+
+    nao_cadastrados = session.get(
+        "inventario_nao_cadastrados",
+        []
+    )
+
+    if nao_cadastrados:
+
+        flash(
+            "Existem produtos não cadastrados. O estoque não foi atualizado.",
+            "error"
+        )
+
+        return redirect(
+            url_for("inventario")
+        )
+
+    atualizados = 0
+
+    for item in resultado:
+
+        produto = Produto.query.filter_by(
+            codigo=item["codigo"]
+        ).first()
+
+        if not produto:
+            continue
+
+        estoque_antigo = produto.estoque
+        estoque_novo = item["inventario"]
+
+        diferenca = estoque_novo - estoque_antigo
+
+        produto.estoque = estoque_novo
+
+        movimentacao = MovimentacaoEstoque(
+            produto_id=produto.id,
+            tipo="INVENTARIO",
+            quantidade=diferenca,
+            observacao="Inventário Geral"
+        )
+
+        db.session.add(movimentacao)
+
+        atualizados += 1
+
+    db.session.commit()
+
+    session.pop("inventario_resultado", None)
+    session.pop("inventario_nao_cadastrados", None)
+
+    flash(
+        f"Inventário concluído com sucesso! {atualizados} produtos atualizados.",
+        "success"
+    )
+
+    return redirect(
+        url_for("inventario")
     )
 # ================= ESTOQUE =================
 
